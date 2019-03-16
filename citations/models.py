@@ -2,7 +2,6 @@ from django.contrib.humanize.templatetags.humanize import ordinal
 from django.db import models
 from django.utils.html import escape
 from datetime import datetime
-import pytz
 
 REFERENCE_TYPE_CHOICES = (
     ('BK', 'Book'),
@@ -34,7 +33,7 @@ class Reference(models.Model):
     comments = models.TextField(blank=True, null=True)
     keywords = models.TextField(blank=True, null=True)
 
-    accessed = models.DateField(default=datetime.now(pytz.utc))
+    accessed = models.DateField(default=datetime.now)
 
     class Meta:
         ordering = ['author']
