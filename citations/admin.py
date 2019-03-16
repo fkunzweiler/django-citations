@@ -1,9 +1,8 @@
 from django.conf.urls import url
 from django.contrib import admin
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 
 import citations.models as reference_models
-from django.template import RequestContext
 
 try:
     from citations.forms import BibtexUploadForm
@@ -30,7 +29,7 @@ class ReferenceAdmin(admin.ModelAdmin):
 
     def upload_bibtex_view(self, request):
         if not 'BibtexUploadForm' in globals():
-            return render_to_response('admin/unable_to_upload_bibtex.html', {})
+            return render(request, template_name='admin/unable_to_upload_bibtex.html')
 
         else:
             if request.method == "POST":
@@ -38,11 +37,11 @@ class ReferenceAdmin(admin.ModelAdmin):
                 if form.is_valid():
                     records = form.save()
                     context = {"form": form, "success": True, "records": records}
-                    return render_to_response("admin/imported.html", context=context)
+                    return render(request, template_name="admin/imported.html", context=context)
             else:
                 form = BibtexUploadForm()
                 context = {"form": form}
-                return render_to_response("admin/imported.html", context=context)
+                return render(request, template_name="admin/imported.html", context=context)
 
 
 admin.site.register(reference_models.Reference, ReferenceAdmin)
