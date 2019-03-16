@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.contrib import admin
 from django.shortcuts import render_to_response
 
@@ -18,9 +18,10 @@ class ReferenceAdmin(admin.ModelAdmin):
         urls = super(ReferenceAdmin, self).get_urls()
 
         if 'BibtexUploadForm' in globals():
-            new_urls = patterns('',
-                url(r'^upload_bibtex/$', self.admin_site.admin_view(self.upload_bibtex_view), name='citations_reference_upload_bibtex')
-            )
+            new_urls = [
+                url(r'^upload_bibtex/$', self.admin_site.admin_view(self.upload_bibtex_view),
+                    name='citations_reference_upload_bibtex')
+            ]
 
             return new_urls + urls
 
@@ -38,7 +39,7 @@ class ReferenceAdmin(admin.ModelAdmin):
                     records = form.save()
                     context = {"form": form, "success": True, "records": records}
                     return render_to_response("admin/imported.html", context,
-                                              context_instance = RequestContext(request))
+                                              context_instance=RequestContext(request))
             else:
                 form = BibtexUploadForm()
                 context = {"form": form}
