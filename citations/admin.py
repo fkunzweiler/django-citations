@@ -38,13 +38,11 @@ class ReferenceAdmin(admin.ModelAdmin):
                 if form.is_valid():
                     records = form.save()
                     context = {"form": form, "success": True, "records": records}
-                    return render_to_response("admin/imported.html", context,
-                                              context_instance=RequestContext(request))
+                    return render_to_response("admin/imported.html", context=context)
             else:
                 form = BibtexUploadForm()
                 context = {"form": form}
-                return render_to_response("admin/imported.html", context,
-                                          context_instance=RequestContext(request))
+                return render_to_response("admin/imported.html", context=context)
 
 
 admin.site.register(reference_models.Reference, ReferenceAdmin)
